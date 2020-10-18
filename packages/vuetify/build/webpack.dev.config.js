@@ -15,8 +15,8 @@ module.exports = merge(baseWebpackConfig, {
   output: {
     filename: '[name].js',
     path: resolve('../dev'),
-    publicPath: '/dev/',
-    library: 'Vuetify'
+    publicPath: '/',
+    library: 'Vuetify',
   },
   resolve: {
     alias: { vuetify: resolve('../src') }
