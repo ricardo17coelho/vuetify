@@ -1,5 +1,7 @@
-import Vue, { ComponentOptions } from 'vue'
-import { Wrapper } from '@vue/test-utils'
+// Setup
+import { ComponentOptions } from 'vue'
+
+// Utilities
 import toHaveBeenWarnedInit from './util/to-have-been-warned'
 
 export function functionalContext (context: ComponentOptions<Vue> = {}, children = []) {
@@ -14,14 +16,14 @@ export function functionalContext (context: ComponentOptions<Vue> = {}, children
   }
 }
 
-export function touch (element: Wrapper<any>) {
+export function touch (element: Element) {
   const createTrigger = (eventName: string) => (clientX: number, clientY: number) => {
     const touches = [{ clientX, clientY }]
     const event = new Event(eventName)
 
     ;(event as any).touches = touches
     ;(event as any).changedTouches = touches
-    element.element.dispatchEvent(event)
+    element.dispatchEvent(event)
 
     return touch(element)
   }
@@ -33,18 +35,26 @@ export function touch (element: Wrapper<any>) {
   }
 }
 
+export const wait = (timeout?: number) => {
+  return new Promise(resolve => setTimeout(resolve, timeout))
+}
+
+export const waitAnimationFrame = (timeout?: number) => {
+  return new Promise(resolve => requestAnimationFrame(resolve))
+}
+
 export const resizeWindow = (width = window.innerWidth, height = window.innerHeight) => {
   (window as any).innerWidth = width
   ;(window as any).innerHeight = height
   window.dispatchEvent(new Event('resize'))
-  return new Promise(resolve => setTimeout(resolve, 200))
+  return wait(200)
 }
 
 export const scrollWindow = (y: number) => {
   (window as any).pageYOffset = y
   window.dispatchEvent(new Event('scroll'))
 
-  return new Promise(resolve => setTimeout(resolve, 200))
+  return wait(200)
 }
 
 // Add a global mockup for IntersectionObserver
